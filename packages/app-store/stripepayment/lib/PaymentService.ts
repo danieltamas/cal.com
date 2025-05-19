@@ -88,7 +88,7 @@ export class PaymentService implements IAbstractPaymentService {
         amount: payment.amount,
         currency: payment.currency,
         customer: customer.id,
-        payment_method_types: ["card", "revolut_pay", "paypal"],
+        // payment_method_types: ["card", "revolut_pay", "paypal"],
         automatic_payment_methods: {
           enabled: true,
         },
