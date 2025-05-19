@@ -93,7 +93,7 @@ export class PaymentService implements IAbstractPaymentService {
           enabled: true,
         },
         metadata: {
-          identifier: "danieltamas.com",
+          identifier: "danieltamas.com", //
           bookingId,
           calAccountId: userId,
           calUsername: username,
