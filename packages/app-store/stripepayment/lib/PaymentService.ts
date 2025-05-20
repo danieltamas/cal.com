@@ -19,6 +19,10 @@ import { retrieveOrCreateStripeCustomerByEmail } from "./customer";
 import type { StripePaymentData, StripeSetupIntentData } from "./server";
 
 const log = logger.getSubLogger({ prefix: ["payment-service:stripe"] });
+const paymentAutomaticPaymentMethods = process.env.PAYMENT_AUTOMATIC_PAYMENT_METHODS === "true";
+const paymentMethodTypes: Array<string> = process.env.PAYMENT_METHOD_TYPES
+  ? process.env.PAYMENT_METHOD_TYPES.split(",")
+  : ["card"];
 
 export const stripeCredentialKeysSchema = z.object({
   stripe_user_id: z.string(),
@@ -88,10 +92,6 @@ export class PaymentService implements IAbstractPaymentService {
         amount: payment.amount,
         currency: payment.currency,
         customer: customer.id,
-        // payment_method_types: ["card", "revolut_pay", "paypal"],
-        automatic_payment_methods: {
-          enabled: true,
-        },
         metadata: {
           identifier: "cal.danieltamas.com", //
           bookingId,
@@ -104,6 +104,14 @@ export class PaymentService implements IAbstractPaymentService {
           bookingTitle: bookingTitle || "",
         },
       };
+
+      if (paymentAutomaticPaymentMethods) {
+        params.automatic_payment_methods = {
+          enabled: true,
+        };
+      } else {
+        params.payment_method_types = paymentMethodTypes;
+      }
 
       const paymentIntent = await this.stripe.paymentIntents.create(params, {
         stripeAccount: this.credentials.stripe_user_id,
