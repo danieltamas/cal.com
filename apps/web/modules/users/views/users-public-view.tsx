@@ -70,7 +70,7 @@ export function UserPage(props: PageProps) {
             isEmbed ? "border-booker border-booker-width  bg-default rounded-md" : "",
             "max-w-3xl px-4 py-24"
           )}>
-          <div className="border-subtle bg-default text-default mb-8 rounded-xl border p-4">
+          {/* <div className="border-subtle bg-default text-default mb-8 rounded-xl border p-4">
             <UserAvatar
               size="lg"
               user={{
@@ -104,7 +104,44 @@ export function UserPage(props: PageProps) {
                 />
               </>
             )}
-          </div>
+          </div> */}
+          {!isEmbed && (
+            <div className="border-subtle bg-default text-default mb-8 rounded-xl border p-4">
+              <UserAvatar
+                size="lg"
+                user={{
+                  avatarUrl: user.avatarUrl,
+                  profile: user.profile,
+                  name: profile.name,
+                  username: profile.username,
+                }}
+              />
+              <h1 className="font-cal text-emphasis mb-1 mt-4 text-xl" data-testid="name-title">
+                {profile.name}
+                {!isOrg && user.verified && (
+                  <Icon
+                    name="badge-check"
+                    className="mx-1 -mt-1 inline h-6 w-6 fill-blue-500 text-white dark:text-black"
+                  />
+                )}
+                {isOrg && (
+                  <Icon
+                    name="badge-check"
+                    className="mx-1 -mt-1 inline h-6 w-6 fill-yellow-500 text-white dark:text-black"
+                  />
+                )}
+              </h1>
+              {!isBioEmpty && (
+                <>
+                  <div
+                    className="text-default break-words text-sm [&_a]:text-blue-500 [&_a]:underline [&_a]:hover:text-blue-600"
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{ __html: props.safeBio }}
+                  />
+                </>
+              )}
+            </div>
+          )}
 
           <div
             className={classNames("rounded-md ", !isEventListEmpty && "border-subtle border")}
